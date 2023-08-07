@@ -1,10 +1,10 @@
 #include "../../include/radar_controller/a05_radar.h"
 
 RadarController_a05::RadarController_a05() {
-    sub_ = nh_.subscribe("a05_radar", 1, &RadarController_a05::distanceCallback, this);
+    sub_ = nh.subscribe("a05_radar", 1, &RadarController_a05::distanceCallback, this);
     radar_cmd_vel = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 20);
     nh.param<int>("targetDistance_a05", targetDistance, 230);
-    nh.param<int>("flag_a05", flag, 1);
+    nh.param<int>("a05_flag", a05_flag, 1);
     nh.param<bool>("log_flag_a05", log_flag, 1);
     nh.param<int>("distanceMax_radar1_a05", distanceMax_radar1, 300);
     nh.param<int>("distanceMax_radar2_a05", distanceMax_radar2, 399);
@@ -44,7 +44,7 @@ RadarController_a05::~RadarController_a05() {
         }
     }
 }
-void distanceCallback(const a22_data::ConstPtr& msg) {
+void RadarController_a05::distanceCallback(const a22_data::ConstPtr& msg) {
     std::vector<int32_t> distance_a05 = msg->a22_datas;
     radar1 = distance_a05[0];
     radar2 = distance_a05[1];
@@ -79,11 +79,7 @@ void RadarController_a05::setLog_cur_time(){
     std::time_t cur_timestamp = std::chrono::system_clock::to_time_t(now);
     logfile << cur_timestamp << " ";
 }
-void RadarController_a05::getStop_flag(){
-    auto now = std::chrono::system_clock::now();
-    std::time_t cur_timestamp = std::chrono::system_clock::to_time_t(now);
-    logfile << cur_timestamp << " ";
-}
+
 bool RadarController_a05::getStop_flag() {
     return stop_flag;
 }

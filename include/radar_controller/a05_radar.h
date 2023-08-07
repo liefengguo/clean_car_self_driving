@@ -2,7 +2,14 @@
 #define RADARCONTROLLERA05_H
 #include <geometry_msgs/Twist.h>
 #include <turn_on_wheeltec_robot/a22_data.h>
-
+#include <ros/ros.h>
+#include <sensor_msgs/Range.h>
+#include <std_msgs/Int32.h>
+#include <iostream>
+#include <fstream> 
+#include <sstream>
+#include <boost/shared_ptr.hpp>
+using namespace turn_on_wheeltec_robot;
 class RadarController_a05 {
 private:
     ros::Publisher radar_cmd_vel;
@@ -37,8 +44,8 @@ private:
     bool stop_flag;
     std::ofstream logfile;
 public:
-    RadarController();
-    ~RadarController();
+    RadarController_a05();
+    ~RadarController_a05();
     void distanceCallback(const a22_data::ConstPtr& msg);
     // RadarController(const DistanceSensor& distanceSensor, const VRFKReader& VRFK_Reader);
     void controlByRadar();
