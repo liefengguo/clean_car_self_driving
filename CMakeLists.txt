@@ -105,9 +105,9 @@ target_link_libraries(RadarController
   ${catkin_LIBRARIES}
 )
 
-add_executable(RadarController src/radar_controller/RadarController_a05.cpp src/radar_controller/RadarController_a05_node.cpp)
-add_dependencies(RadarController ${PROJECT_NAME}_generate_messages_cpp)
-target_link_libraries(RadarController
+add_executable(RadarController_a05 src/radar_controller/RadarController_a05.cpp src/radar_controller/RadarController_a05_node.cpp)
+add_dependencies(RadarController_a05 ${PROJECT_NAME}_generate_messages_cpp)
+target_link_libraries(RadarController_a05
   ${catkin_LIBRARIES}
 )
 
