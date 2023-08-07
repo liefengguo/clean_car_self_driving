@@ -105,6 +105,12 @@ target_link_libraries(RadarController
   ${catkin_LIBRARIES}
 )
 
+add_executable(RadarController src/radar_controller/RadarController_a05.cpp src/radar_controller/RadarController_a05_node.cpp)
+add_dependencies(RadarController ${PROJECT_NAME}_generate_messages_cpp)
+target_link_libraries(RadarController
+  ${catkin_LIBRARIES}
+)
+
 add_executable(main_node src/main_node.cpp src/purepursuit/pure_pursuit.cpp   src/radar_controller/RadarController.cpp 
  src/tools/gnss_coordinate_convert.cpp src/bizhang/BezierCurve.cpp src/bizhang/DWA.cpp
 src/radar_controller/VRFKReader.cpp src/serial_connect/six_decition_radar.cpp src/serial_connect/adaptive_filter.cpp)
