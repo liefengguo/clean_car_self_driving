@@ -159,7 +159,7 @@ int main(int argc, char** argv) {
     }
 
     std::cout << "UDP server is listening on " << SERVER_IP << ":" << SERVER_PORT << std::endl;
-	ros::Rate loop_rate(10); 
+	ros::Rate loop_rate(20); 
     signal(SIGINT, signalHandler);
 
     // 接收数据
@@ -192,6 +192,7 @@ int main(int argc, char** argv) {
             pub_carSpeed.publish(speed);
             std::cout << std::endl;
         }
+        
         ros::spinOnce();
         loop_rate.sleep();//以10Hz循环，循环跑太快就在这里睡一会儿
     }

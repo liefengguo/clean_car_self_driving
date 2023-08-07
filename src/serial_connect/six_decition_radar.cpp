@@ -1,4 +1,9 @@
 #include "../../include/serial_connect/six_decition_radar.h"
+#include <algorithm>
+#include <chrono>
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
 DistanceSensor::DistanceSensor() {
     sub_ = nh_.subscribe("a22_radar", 1, &DistanceSensor::distanceCallback, this);
@@ -54,28 +59,9 @@ void DistanceSensor::distanceCallback(const a22_data::ConstPtr& msg) {
     filteredDistance4 = filter5.filter(distance_[4]);
     filteredDistance5 = filter6.filter(distance_[5]);
 
-    std::cout<<"真值1："<<distance_[1]<< "距离："<<filteredDistance1<<std::endl;
-    std::cout<<"真值2："<<distance_[2]<< "距离："<<filteredDistance2<<std::endl;
-    std::cout<<"真值0："<<distance_[0]<< "距离："<<filteredDistance0<<std::endl;
-    if(log_flag){
-        if (!logfile.is_open()) {
-            // 处理无法打开日志文件的情况
-            std::cout<<"no open!!!!"<<std::endl;
-            // return;
-    }
-        logfile << distance_[0] << " ";
-        logfile << distance_[1] << " ";
-        logfile << distance_[2] << " ";
-        logfile << distance_[3] << " ";
-        logfile << distance_[4] << " ";
-        logfile << distance_[5] << " ";
-        logfile << filteredDistance0 << " ";
-        logfile << filteredDistance1 << " ";
-        logfile << filteredDistance2 << " ";
-        logfile << filteredDistance3 << " ";
-        logfile << filteredDistance4 << " ";
-        logfile << filteredDistance5 <<  std::endl;
-    }
+    //std::cout<<"真值1："<<distance_[1]<< "距离："<<filteredDistance1<<std::endl;
+   // std::cout<<"真值2："<<distance_[2]<< "距离："<<filteredDistance2<<std::endl;
+  //  std::cout<<"真值0："<<distance_[0]<< "距离："<<filteredDistance0<<std::endl;
 
 }
 

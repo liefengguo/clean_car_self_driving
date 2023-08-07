@@ -1,0 +1,149 @@
+diff --git a/include/udp_log.h b/include/udp_log.h
+index 2d354b9..b31e259 100644
+--- a/include/udp_log.h
++++ b/include/udp_log.h
+@@ -13,8 +13,8 @@
+ #include <chrono>
+ #include <turn_on_wheeltec_robot/Speed.h>
+ #include "ros/ros.h"
+-#define SERVER_IP "127.0.0.1" // 本地IP地址
+-// #define SERVER_IP "192.168.100.53" // 本地IP地址
++// #define SERVER_IP "127.0.0.1" // 本地IP地址
++#define SERVER_IP "192.168.100.53" // 本地IP地址
+ #define SERVER_PORT 8888      // 监听端口号
+ 
+ struct ChassisData {
+diff --git a/launch/main_path_radar.launch b/launch/main_path_radar.launch
+index 49c572b..463cb04 100755
+--- a/launch/main_path_radar.launch
++++ b/launch/main_path_radar.launch
+@@ -10,13 +10,13 @@
+     <param name="bufferSize" value="20" />
+     <param name="threshold" value="50000.0" />
+     <param name="log_flag" value="1" />
+-    <param name="distanceMax_radar2" value="300" />
++    <param name="distanceMax_radar2" value="399" />
+ 
+     <param name="max_rotational_velocity" value="1" />
+     <param name="position_tolerance" value="1" />
+     <param name="steering_angle_limit" value="1" />
+-    <param name="car_vel" value="1" />
+-    <param name="lookahead_distance" value="1" />
++    <param name="car_vel" value="0.3" />
++    <param name="lookahead_distance" value="3" />
+     <param name="pure_pursuit_log_path" value="1" />
+ 
+   <node pkg="turn_on_wheeltec_robot" type="main_node" name="main_node" output="screen">
+diff --git a/launch/position_saver.launch b/launch/position_saver.launch
+index 4551edc..a45fe41 100644
+--- a/launch/position_saver.launch
++++ b/launch/position_saver.launch
+@@ -2,11 +2,10 @@
+   <!-- <arg name="file_path" default="$(find position_saver_node)/output/position.txt" /> -->
+   <!-- <arg name="topic_name" default="/djiros/rtk_position" /> -->
+   <!-- <arg name="topic_name" default="/fixposition/navsatfix" /> -->
+-
+   <node pkg="turn_on_wheeltec_robot" type="record_points" name="record_points" output="screen">
+     <param name="file_path" value="$(find turn_on_wheeltec_robot)/output/" />
+     <!-- <param name="file_name" value="GPS_ENU.txt" /> -->
+-    <param name="file_name" value="wandao.txt" />
++    <param name="file_name" value="all.txt" />
+     <!-- <param name="topic_name" value="/fixposition/navsatfix" /> -->
+     <param name="topic_name" value="/djiros/rtk_position" />
+     <param name="save_interval" value="1.0" />
+diff --git a/launch/purepursuit.launch b/launch/purepursuit.launch
+index e24272c..86a3f3c 100644
+--- a/launch/purepursuit.launch
++++ b/launch/purepursuit.launch
+@@ -1,4 +1,13 @@
+ <launch>
++
++
++
++    <param name="max_rotational_velocity" value="1" />
++    <param name="position_tolerance" value="1" />
++    <param name="steering_angle_limit" value="1" />
++    <param name="car_vel" value="1" />
++    <param name="lookahead_distance" value="3" />
++    <param name="pure_pursuit_log_path" value="1" />
+     <node pkg="turn_on_wheeltec_robot" type="purepursuit" name="purepursuit" output="screen"/>
+     <!-- <param name="gps_points" value="$(find gps_record)/output/gps_points.txt" /> -->
+     <param name="log_flag" value = "1" />
+diff --git a/launch/referenceline_points.launch b/launch/referenceline_points.launch
+index a082181..13e00ca 100644
+--- a/launch/referenceline_points.launch
++++ b/launch/referenceline_points.launch
+@@ -7,7 +7,7 @@
+     <!-- <param name="gps_points" value="$(find gps_record)/output/num.txt" /> -->
+     <!-- <param name="gps_points" value="$(find gps_record)/output/gps_points.txt" /> -->
+     <!-- <param name="topic_name" value="/fixposition/navsatfix" /> -->
+-    <param name="gps_points" value="$(find turn_on_wheeltec_robot)/output/wandao.txt" />
++    <param name="gps_points" value="$(find turn_on_wheeltec_robot)/output/all.txt" />
+     <param name="topic_name" value="/djiros/rtk_position" />
+     <param name="save_interval" value="1.0" />
+   </node>
+diff --git a/src/main_node.cpp b/src/main_node.cpp
+index 2dc8c5f..54ca6aa 100644
+--- a/src/main_node.cpp
++++ b/src/main_node.cpp
+@@ -20,6 +20,7 @@ int main(int argc, char**argv){
+             radar_controller.setRadar6(sensor.getFilteredDistance5());
+             radar_controller.setGNSSStatus(vrtkReader.getGNSSStatus());
+             radar_controller.setPath_degree(controller_path.getDegree());
++            radar_controller.setPath_vel(controller_path.getVel());
+             radar_controller.controlByRadar();
+         }
+ 
+diff --git a/src/purepursuit/pure_pursuit.cpp b/src/purepursuit/pure_pursuit.cpp
+index 2af7f0f..fd14368 100644
+--- a/src/purepursuit/pure_pursuit.cpp
++++ b/src/purepursuit/pure_pursuit.cpp
+@@ -14,7 +14,7 @@ PurePursuit::PurePursuit() : lookahead_distance_(1.0), v_max_(0.3), car_vel(v_ma
+   nh_private_.param<double>("position_tolerance", position_tolerance_, 0.1);
+   nh_private_.param<double>("steering_angle_limit", delta_max_, 1);
+   nh_private_.param<double>("car_vel", car_vel, 0.4);
+-  nh_private_.param<double>("lookahead_distance", lookahead_distance_, 1);
++  nh_private_.param<double>("lookahead_distance", lookahead_distance_, 3);
+   nh_private_.param<string>("pure_pursuit_log_path", pure_pursuit_log_path, "/home/glf/log/");
+   pointNum = 0;
+   // targetIndex = pointNum - 1;
+diff --git a/src/radar_controller/RadarController.cpp b/src/radar_controller/RadarController.cpp
+index 24d80f1..b0b1f50 100644
+--- a/src/radar_controller/RadarController.cpp
++++ b/src/radar_controller/RadarController.cpp
+@@ -91,7 +91,7 @@ void RadarController::setRadar6(int value) {
+ }
+ 
+ void RadarController::turnLeft() {
+-    vel_msg.angular.z = -angular_z;  // 设置负角速度以左转
++    vel_msg.angular.z = path_degree* 0.5 / 38.6 - 0.086;  // 设置负角速度以左转
+     vel_msg.linear.x = path_vel;
+     radar_cmd_vel.publish(vel_msg);
+     if(log_flag){
+@@ -99,7 +99,7 @@ void RadarController::turnLeft() {
+     }
+ }
+ void RadarController::turnRight() {
+-    vel_msg.angular.z = angular_z;  // 设置正角速度以右转
++    vel_msg.angular.z = path_degree* 0.5 / 38.6 + 0.068;  // 设置正角速度以右转
+     vel_msg.linear.x = path_vel;
+     radar_cmd_vel.publish(vel_msg);
+     if(log_flag){
+@@ -108,7 +108,7 @@ void RadarController::turnRight() {
+ }
+ void RadarController::turnLeft_curva() {
+     // if (path_degree >0){
+-        vel_msg.angular.z = path_degree* 0.5 / 38.6 - 0.1 ;  // 设置负角速度以左转
++        vel_msg.angular.z = path_degree* 0.5 / 38.6 - 0.086 ;  // 设置负角速度以左转
+     // } else{
+         // vel_msg.angular.z = path_degree* 0.5 / 38.6 - 0.1 ;  // 设置负角速度以左转
+     // }
+@@ -119,7 +119,7 @@ void RadarController::turnLeft_curva() {
+     }
+ }
+ void RadarController::turnRight_curva() {
+-    vel_msg.angular.z = path_degree* 0.5 / 38.6 + 0.1;  // 设置正角速度以右转
++    vel_msg.angular.z = path_degree* 0.5 / 38.6 + 0.068;  // 设置正角速度以右转
+     vel_msg.linear.x = path_vel;
+     radar_cmd_vel.publish(vel_msg);
+     if(log_flag){
