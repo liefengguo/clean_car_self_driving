@@ -32,7 +32,7 @@ private:
     
     void turnLeft();
     void turnRight();
-        
+    void go_line();
     void turnLeft_huge();
     void turnRight_huge();
     void turnLeft_curva();

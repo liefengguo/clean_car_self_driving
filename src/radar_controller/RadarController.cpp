@@ -22,7 +22,7 @@ RadarController::RadarController() {
         nh.param<int>("distanceMax_radar2", distanceMax_radar2, 399);
     nh.param<int>("distanceMax_radar1", distanceMax_radar1, 300);
     nh.param<int>("distanceMax_radar3", distanceMax_radar3, 399);
-    nh.param<int>("distanceThreshold_radar2_3", distanceThreshold_radar2_3, 399);
+    nh.param<int>("distanceThreshold_radar2_3", distanceThreshold_radar2_3, 38);
 if(log_flag){
         std::string path = "/home/glf/log/";
         std::stringstream  filename;
@@ -156,25 +156,51 @@ void RadarController::turnRight_curva() {
         logfile << vel_msg.angular.z << std::endl;
     }
 }
+void RadarController::go_line(){
+    vel_msg.angular.z = 0;
+    vel_msg.linear.x = path_vel;
+    radar_cmd_vel.publish(vel_msg);
+    std::cout<< "OK! go "<<std::endl;
+    if(log_flag){
+        logfile << vel_msg.angular.z << std::endl;
+    }
+}
 void RadarController::line_controlByRadar(){
-    if (radar2 < targetDistance - distanceThreshold ) {
-        std::cout<< "距离过近，left:"<<std::endl;
-        turnLeft();
-        // std::cout<<"radar2: "<<radar2<<" targetDistance - distanceThreshold: "<<targetDistance - distanceThreshold<<std::endl;
-    } else if (radar2 > targetDistance + distanceThreshold) {
-        turnRight();
-        std::cout<< "distance too far， right please!!"<<std::endl;
-        // std::cout<<"radar2: "<<radar2<<" targetDistance + distanceThreshold: "<<targetDistance + distanceThreshold<<std::endl;
-    } else {
-        vel_msg.angular.z = 0;
-        vel_msg.linear.x = path_vel;
-        radar_cmd_vel.publish(vel_msg);
-        std::cout<< "OK! go "<<std::endl;
-        // std::cout<<"radar2: "<<radar2<<" targetDistance - distanceThreshold: "<<targetDistance - distanceThreshold<<std::endl;
-        if(log_flag){
-            logfile << vel_msg.angular.z << std::endl;
+    radar2_3_dif = radar2 - radar3;
+    int 
+    if (radar2_3_dif >  distanceThreshold_radar2_3)
+    {
+        if (radar3 < targetDistance - distanceThreshold ){
+            turnLeft();
+        } else if (radar3 > targetDistance + distanceThreshold - 10)
+        {
+            turnRight();
+        } else {
+            go_line();
+        }
+    } else if (radar2_3_dif < -distanceThreshold_radar2_3){
+        if (radar2 < targetDistance - distanceThreshold  ){
+            turnLeft();
+        }else if (radar2 > targetDistance + distanceThreshold)
+        {
+            turnRight();
+        } else {
+            go_line();
+        }
+    }else {
+        if (radar2 < targetDistance - distanceThreshold || radar3 < targetDistance - distanceThreshold ) {
+            std::cout<< "距离过近，left:"<<std::endl;
+            turnLeft();
+            // std::cout<<"radar2: "<<radar2<<" targetDistance - distanceThreshold: "<<targetDistance - distanceThreshold<<std::endl;
+        } else if (radar2 > targetDistance + distanceThreshold  && radar3 > targetDistance + distanceThreshold - 10) {
+            turnRight();
+            std::cout<< "distance too far， right please!!"<<std::endl;
+            // std::cout<<"radar2: "<<radar2<<" targetDistance + distanceThreshold: "<<targetDistance + distanceThreshold<<std::endl;
+        } else {
+            go_line();
         }
     }
+
 }
 void RadarController::curvature_controlByRadar(){
     if (radar2 < curvaDistance - distanceThreshold ) {
