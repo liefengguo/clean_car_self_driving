@@ -176,7 +176,7 @@ void RadarController::go_line(){
 }
 void RadarController::line_controlByRadar(){
     radar2_3_dif = radar2 - radar3;
-    int 
+    // int 
     if (radar2_3_dif >  distanceThreshold_radar2_3)
     {
         if (radar3 < targetDistance - distanceThreshold ){
