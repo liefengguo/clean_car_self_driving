@@ -137,11 +137,20 @@ void RadarController::turnRight_huge() {
     }
 }
 void RadarController::turnLeft_curva() {
-    // if (path_degree >0){
-        vel_msg.angular.z = path_degree* 0.5 / 38.6 - 0.086 ;  // 设置负角速度以左转
-    // } else{
-        // vel_msg.angular.z = path_degree* 0.5 / 38.6 - 0.1 ;  // 设置负角速度以左转
-    // }
+    if (path_degree > 0)
+    {
+        if (radar3 < targetDistance - distanceThreshold *3 /2 || radar2 < targetDistance - distanceThreshold *3 /2 ){
+            vel_msg.angular.z = path_degree* 0.5 / 38.6 - 0.1 ;  // 太近转大
+        } else{
+            vel_msg.angular.z = path_degree* 0.5 / 38.6 - 0.086 ;  // 正常转
+        }
+    }else {
+        if (radar3 < targetDistance - distanceThreshold *3 /2 || radar2 < targetDistance - distanceThreshold *3 /2 ){
+            vel_msg.angular.z = path_degree* 0.5 / 38.6 + 0.1 ;  // 设置负角速度以左转
+        } else{
+            vel_msg.angular.z = path_degree* 0.5 / 38.6 + 0.86 ;  // 设置负角速度以左转
+        }
+    }
     vel_msg.linear.x = path_vel;
     radar_cmd_vel.publish(vel_msg);
     if(log_flag){
@@ -200,10 +209,9 @@ void RadarController::line_controlByRadar(){
             go_line();
         }
     }
-
 }
 void RadarController::curvature_controlByRadar(){
-    if (radar2 < curvaDistance - distanceThreshold ) {
+    if (radar2 < targetDistance - distanceThreshold || radar3 < targetDistance - distanceThreshold ) {
         std::cout<< "距离过近，left:"<<std::endl;
         turnLeft_curva();
         // std::cout<<"radar2: "<<radar2<<" targetDistance - distanceThreshold: "<<targetDistance - distanceThreshold<<std::endl;
@@ -229,7 +237,7 @@ void RadarController::controlByRadar() {
             turnLeft_huge();
         }else {
             if (path_dis_ < path_dis_threshold){
-                if(abs(path_degree) < 12 || path_degree == 0){
+                if(abs(path_degree) < 8 || path_degree == 0){
                     if (radar2 < distanceMax_radar2){
                         line_controlByRadar();
                     } else {
@@ -237,7 +245,7 @@ void RadarController::controlByRadar() {
                             logfile << -1 << std::endl;
                         }
                     }
-                }else if(abs(path_degree) >= 12){
+                }else if(abs(path_degree) >= 8){
                     curvature_controlByRadar();
                 }
             }else{
