@@ -157,12 +157,12 @@ void RadarController::turnRight_curva() {
     }
 }
 void RadarController::go_line(){
-    vel_msg.angular.z = 0;
-    vel_msg.linear.x = path_vel;
-    radar_cmd_vel.publish(vel_msg);
+    // vel_msg.angular.z = 0;
+    // vel_msg.linear.x = path_vel;
+    // radar_cmd_vel.publish(vel_msg);
     std::cout<< "OK! go "<<std::endl;
     if(log_flag){
-        logfile << vel_msg.angular.z << std::endl;
+        logfile << 0 << std::endl;
     }
 }
 void RadarController::line_controlByRadar(){

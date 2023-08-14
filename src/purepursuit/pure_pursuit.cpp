@@ -51,7 +51,8 @@ PurePursuit::PurePursuit() : lookahead_distance_(1.0), v_max_(0.3), car_vel(v_ma
   nh_private_.param<double>("position_tolerance", position_tolerance_, 0.1);
   nh_private_.param<double>("steering_angle_limit", delta_max_, 1);
   nh_private_.param<double>("car_vel", car_vel, 0.4);
-  nh_private_.param<double>("lookahead_distance", lookahead_distance_, 3);
+  nh_private_.param<double>("lookahead_distance", lookahead_distance_, 0.3);
+  nh_private_.param<double>("lookahead_distance", lookahead_distance_long, 0.5);
   nh_private_.param<string>("pure_pursuit_log_path", pure_pursuit_log_path, "/home/glf/log/");
   pointNum = 0, tmp_count = 0, stop_count = 0,aim_index=9999;
   in_bizhang = false,has_barrier = false;
@@ -110,6 +111,31 @@ bool PurePursuit::detect_barrier() {
     }
     return false;
 }
+double PurePursuit::calculateCurvature(const vector<double>& path_x, const vector<double>& path_y, int index) {
+    if (index < 1 || index >= path_x.size() - 1) {
+        // Invalid index
+        return 0.0;
+    }
+
+    // Calculate differences between consecutive points
+    double dx1 = path_x[index] - path_x[index - 1];
+    double dy1 = path_y[index] - path_y[index - 1];
+    double dx2 = path_x[index + 1] - path_x[index];
+    double dy2 = path_y[index + 1] - path_y[index];
+
+    // Calculate the curvature using cross product formula
+    double cross_product = dx1 * dy2 - dy1 * dx2;
+    double denominator = pow(dx1 * dx1 + dy1 * dy1, 1.5);
+    
+    if (denominator == 0.0) {
+        // Avoid division by zero
+        return 0.0;
+    }
+
+    double curvature = cross_product / denominator;
+    return curvature;
+}
+
 
 double PurePursuit::getDegree(){return degree;}
 //计算发送给模型车的转角
@@ -157,6 +183,11 @@ void PurePursuit::poseCallback(const nav_msgs::Odometry &currentWaypoint) {
     // 找到最小横向距离的索引位置
     index = distance(bestPoints_.begin(), smallest);
     int temp_index;
+
+    // 根据路径的曲率或角度变化来动态调整预瞄距离
+    double curvature = calculateCurvature(r_x_, r_y_, index); // 自定义计算曲率的函数
+    double adjusted_lookahead_distance;
+
     for (int i = index; i < pointNum; i++) {
       //遍历路径点和预瞄点的距离，从最小横向位置的索引开始
       float dis =

@@ -79,6 +79,7 @@ private:
     int index;
     double car_vel,v_max_,w_max_, delta_max_;
     double lookahead_distance_, position_tolerance_;
+    double lookahead_distance_long;
     bool log_flag;
     double preview_dis;
     double k ;
@@ -86,10 +87,13 @@ private:
     bool goal_reached_, path_loaded_;
     int tmp_count;
 
+    double calculateCurvature(const vector<double>& path_x, const vector<double>& path_y, int index);
+
     // Other class members and functions as before
     // ...
     std::string pure_pursuit_log_path;
     std::stringstream filename;
+
 
 };
 #endif // PURE_PURSUIT_H
