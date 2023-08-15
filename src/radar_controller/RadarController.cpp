@@ -196,7 +196,7 @@ void RadarController::line_controlByRadar(){
         } else {
             go_line();
         }
-    }else {
+    } else {
         if (radar2 < targetDistance - distanceThreshold || radar3 < targetDistance - distanceThreshold ) {
             std::cout<< "距离过近，left:"<<std::endl;
             turnLeft();
@@ -220,9 +220,9 @@ void RadarController::curvature_controlByRadar(){
         std::cout<< "distance too far， right please!!"<<std::endl;
         // std::cout<<"radar2: "<<radar2<<" targetDistance + distanceThreshold: "<<targetDistance + distanceThreshold<<std::endl;
     } else {
-        vel_msg.angular.z = path_degree* 0.5 / 38.6;
-        vel_msg.linear.x = linear_x;
-        radar_cmd_vel.publish(vel_msg);
+        // vel_msg.angular.z = path_degree* 0.5 / 38.6;
+        // vel_msg.linear.x = linear_x;
+        // radar_cmd_vel.publish(vel_msg);
         std::cout<< "OK! go "<<std::endl;
         // std::cout<<"radar2: "<<radar2<<" targetDistance - distanceThreshold: "<<targetDistance - distanceThreshold<<std::endl;
         if(log_flag){
