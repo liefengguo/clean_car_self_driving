@@ -109,7 +109,7 @@ void RadarController::turnLeft() {
     vel_msg.linear.x = path_vel;
     radar_cmd_vel.publish(vel_msg);
     if(log_flag){
-        logfile << vel_msg.angular.z << std::endl;
+        logfile << vel_msg.angular.z <<" turnLeft "<< std::endl;
     }
 }
 void RadarController::turnRight() {
@@ -117,15 +117,15 @@ void RadarController::turnRight() {
     vel_msg.linear.x = path_vel;
     radar_cmd_vel.publish(vel_msg);
     if(log_flag){
-        logfile << vel_msg.angular.z << std::endl;
+        logfile << vel_msg.angular.z <<" turnRight"<< std::endl;
     }
 }
 void RadarController::turnLeft_huge() {
-    vel_msg.angular.z = path_degree* 0.5 / 38.6 - 0.186;  // 设置负角速度以左转
+    vel_msg.angular.z = path_degree* 0.5 / 38.6 - 0.2;  // 设置负角速度以左转
     vel_msg.linear.x = path_vel;
     radar_cmd_vel.publish(vel_msg);
     if(log_flag){
-        logfile << -vel_msg.angular.z << std::endl;
+        logfile << -vel_msg.angular.z<<" turnLeft_huge" << std::endl;
     }
 }
 void RadarController::turnRight_huge() {
@@ -140,9 +140,9 @@ void RadarController::turnLeft_curva() {
     if (path_degree > 0)
     {
         if (radar3 < targetDistance - distanceThreshold *3 /2 || radar2 < targetDistance - distanceThreshold *3 /2 ){
-            vel_msg.angular.z = path_degree* 0.5 / 38.6 - 0.1 ;  // 太近转大
+            vel_msg.angular.z = path_degree* 0.5 / 38.6 - 0.168 ;  // 太近转大
         } else{
-            vel_msg.angular.z = path_degree* 0.5 / 38.6 - 0.086 ;  // 正常转
+            vel_msg.angular.z = path_degree* 0.5 / 38.6 - 0.1 ;  // 正常转
         }
     }else {
         if (radar3 < targetDistance - distanceThreshold *3 /2 || radar2 < targetDistance - distanceThreshold *3 /2 ){
@@ -154,7 +154,7 @@ void RadarController::turnLeft_curva() {
     vel_msg.linear.x = path_vel;
     radar_cmd_vel.publish(vel_msg);
     if(log_flag){
-        logfile << vel_msg.angular.z << std::endl;
+        logfile << vel_msg.angular.z << "turnLeft_curva" << std::endl;
     }
 }
 void RadarController::turnRight_curva() {
@@ -162,7 +162,7 @@ void RadarController::turnRight_curva() {
     vel_msg.linear.x = path_vel;
     radar_cmd_vel.publish(vel_msg);
     if(log_flag){
-        logfile << vel_msg.angular.z << std::endl;
+        logfile << vel_msg.angular.z << "turnRight_curva" << std::endl;
     }
 }
 void RadarController::go_line(){
@@ -181,18 +181,30 @@ void RadarController::line_controlByRadar(){
     {
         if (radar3 < targetDistance - distanceThreshold ){
             turnLeft();
-        } else if (radar3 > targetDistance + distanceThreshold - 10)
+            if(log_flag){
+                logfile  << "radar3 " << radar3<< std::endl;
+            }
+        } else if (radar3 > targetDistance + distanceThreshold )
         {
             turnRight();
+            if(log_flag){
+                logfile  << "radar3 " << radar3<< std::endl;
+            }
         } else {
             go_line();
         }
     } else if (radar2_3_dif < -distanceThreshold_radar2_3){
         if (radar2 < targetDistance - distanceThreshold  ){
             turnLeft();
+            if(log_flag){
+                logfile  << "radar2 " << radar2<< std::endl;
+            }
         }else if (radar2 > targetDistance + distanceThreshold)
         {
             turnRight();
+            if(log_flag){
+                logfile  << "radar2 " << radar2<< std::endl;
+            }
         } else {
             go_line();
         }
@@ -211,7 +223,7 @@ void RadarController::line_controlByRadar(){
     }
 }
 void RadarController::curvature_controlByRadar(){
-    if (radar2 < targetDistance - distanceThreshold || radar3 < targetDistance - distanceThreshold ) {
+    if (radar2 < targetDistance - distanceThreshold  || radar3 < targetDistance - distanceThreshold ) {
         std::cout<< "距离过近，left:"<<std::endl;
         turnLeft_curva();
         // std::cout<<"radar2: "<<radar2<<" targetDistance - distanceThreshold: "<<targetDistance - distanceThreshold<<std::endl;
@@ -266,6 +278,9 @@ void RadarController::controlByRadar() {
 
 void RadarController::setPath_degree(double degree_){
     path_degree = degree_;
+    if(log_flag){
+        logfile   << degree_* 0.5 / 38.6;
+    }
 }
 void RadarController::setPath_vel(double vel_){
     path_vel = vel_ * 0.05;
