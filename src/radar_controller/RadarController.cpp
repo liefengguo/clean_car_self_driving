@@ -9,20 +9,20 @@ using namespace std;
 
 RadarController::RadarController() {
     radar_cmd_vel = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 20);
-    nh.param<int>("targetDistance", targetDistance, 230);
-    nh.param<int>("curvaDistance", curvaDistance, 200);
-    nh.param<int>("distanceThreshold", distanceThreshold, 80);
-    nh.param<double>("path_dis_threshold", path_dis_threshold,0.5);
-    nh.param<double>("angular_z", angular_z, 0.08);
-    nh.param<double>("linear_x", linear_x, 0.3);
-    nh.param<int>("flag", flag, 1);
-    nh.param<bool>("log_flag", log_flag, 1);
+    nh.param<int>("/targetDistance", targetDistance, 230);
+    nh.param<int>("/curvaDistance", curvaDistance, 200);
+    nh.param<int>("/distanceThreshold", distanceThreshold, 80);
+    nh.param<double>("/path_dis_threshold", path_dis_threshold,0.5);
+    nh.param<double>("/angular_z", angular_z, 0.08);
+    nh.param<double>("/linear_x", linear_x, 0.3);
+    nh.param<int>("/flag", flag, 1);
+    nh.param<bool>("/log_flag", log_flag, 1);
     // nh.param<int>("distanceMax_radar2", distanceMax_radar2, 399);
     
-        nh.param<int>("distanceMax_radar2", distanceMax_radar2, 399);
-    nh.param<int>("distanceMax_radar1", distanceMax_radar1, 300);
-    nh.param<int>("distanceMax_radar3", distanceMax_radar3, 399);
-    nh.param<int>("distanceThreshold_radar2_3", distanceThreshold_radar2_3, 38);
+        nh.param<int>("/distanceMax_radar2", distanceMax_radar2, 399);
+    nh.param<int>("/distanceMax_radar1", distanceMax_radar1, 300);
+    nh.param<int>("/distanceMax_radar3", distanceMax_radar3, 399);
+    nh.param<int>("/distanceThreshold_radar2_3", distanceThreshold_radar2_3, 38);
 if(log_flag){
         std::string path = "/home/glf/log/";
         std::stringstream  filename;

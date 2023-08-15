@@ -3,17 +3,17 @@
 RadarController_a05::RadarController_a05() {
     sub_ = nh.subscribe("a05_radar", 1, &RadarController_a05::distanceCallback, this);
     radar_cmd_vel = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 20);
-    nh.param<int>("targetDistance_a05", targetDistance, 230);
-    nh.param<int>("a05_flag", a05_flag, 1);
-    nh.param<bool>("log_flag_a05", log_flag, 1);
-    nh.param<int>("distanceMax_radar1_a05", distanceMax_radar1, 300);
-    nh.param<int>("distanceMax_radar2_a05", distanceMax_radar2, 399);
-    nh.param<int>("distanceMax_radar3_a05", distanceMax_radar3, 399);
-    nh.param<int>("distanceMax_radar4_a05", distanceMax_radar4, 399);
-    nh.param<int>("distanceMax_radar5_a05", distanceMax_radar5, 300);
-    nh.param<int>("distanceMax_radar6_a05", distanceMax_radar6, 399);
-    nh.param<int>("distanceMax_radar7_a05", distanceMax_radar7, 399);
-    nh.param<int>("distanceMax_radar8_a05", distanceMax_radar8, 300);
+    nh.param<int>("/targetDistance_a05", targetDistance, 230);
+    nh.param<int>("/a05_flag", a05_flag, 1);
+    nh.param<bool>("/log_flag_a05", log_flag, 1);
+    nh.param<int>("/distanceMax_radar1_a05", distanceMax_radar1, 300);
+    nh.param<int>("/distanceMax_radar2_a05", distanceMax_radar2, 399);
+    nh.param<int>("/distanceMax_radar3_a05", distanceMax_radar3, 399);
+    nh.param<int>("/distanceMax_radar4_a05", distanceMax_radar4, 399);
+    nh.param<int>("/distanceMax_radar5_a05", distanceMax_radar5, 300);
+    nh.param<int>("/distanceMax_radar6_a05", distanceMax_radar6, 399);
+    nh.param<int>("/distanceMax_radar7_a05", distanceMax_radar7, 399);
+    nh.param<int>("/distanceMax_radar8_a05", distanceMax_radar8, 300);
 
     if(log_flag){
         std::string path = "/home/glf/log/";
