@@ -109,7 +109,7 @@ void RadarController::turnLeft() {
     vel_msg.linear.x = path_vel;
     radar_cmd_vel.publish(vel_msg);
     if(log_flag){
-        logfile << vel_msg.angular.z <<" turnLeft "<< std::endl;
+        logfile << vel_msg.angular.z <<" ：turnLeft "<< std::endl;
     }
 }
 void RadarController::turnRight() {
@@ -117,7 +117,7 @@ void RadarController::turnRight() {
     vel_msg.linear.x = path_vel;
     radar_cmd_vel.publish(vel_msg);
     if(log_flag){
-        logfile << vel_msg.angular.z <<" turnRight"<< std::endl;
+        logfile << vel_msg.angular.z <<" ：turnRight"<< std::endl;
     }
 }
 void RadarController::turnLeft_huge() {
@@ -171,7 +171,7 @@ void RadarController::go_line(){
     // radar_cmd_vel.publish(vel_msg);
     std::cout<< "OK! go "<<std::endl;
     if(log_flag){
-        logfile << 0 << std::endl;
+        logfile << "不做修改！！！" << std::endl;
     }
 }
 void RadarController::line_controlByRadar(){
@@ -182,13 +182,13 @@ void RadarController::line_controlByRadar(){
         if (radar3 < targetDistance - distanceThreshold ){
             turnLeft();
             if(log_flag){
-                logfile  << "radar3 :" << radar3<< std::endl;
+                logfile  << "radar diff 太大 用了radar3 :" << radar3<< std::endl;
             }
         } else if (radar3 > targetDistance + distanceThreshold )
         {
             turnRight();
             if(log_flag){
-                logfile  << "radar3 :" << radar3<< std::endl;
+                logfile  << "radar diff 太大 用了radar3 :" << radar3<< std::endl;
             }
         } else {
             go_line();
@@ -197,13 +197,13 @@ void RadarController::line_controlByRadar(){
         if (radar2 < targetDistance - distanceThreshold  ){
             turnLeft();
             if(log_flag){
-                logfile  << "radar2 " << radar2<< std::endl;
+                logfile  << "radar diff 太大 用了radar2 " << radar2<< std::endl;
             }
         }else if (radar2 > targetDistance + distanceThreshold)
         {
             turnRight();
             if(log_flag){
-                logfile  << "radar2 " << radar2<< std::endl;
+                logfile  << "radar diff 太大 用了radar2 " << radar2<< std::endl;
             }
         } else {
             go_line();
@@ -254,7 +254,7 @@ void RadarController::controlByRadar() {
                         line_controlByRadar();
                     } else {
                         if(log_flag){
-                            logfile << -1 << std::endl;
+                            logfile << " 雷达木有控制" << std::endl;
                         }
                     }
                 }else if(abs(path_degree) >= 8){
