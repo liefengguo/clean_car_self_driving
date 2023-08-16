@@ -41,9 +41,18 @@ udp_action::udp_action(){
     {
         std::cerr << e.what() << '\n';
     }
+    main_clean(1000);
+    sub_clean(1);
+    main_clean(1000);
+    sub_clean(1);
+    
 }
 udp_action::~udp_action(){
         //对象turn_on_robot结束前向下位机发送停止运动命令
+    main_clean(0);
+    sub_clean(0);
+    main_clean(0);
+    sub_clean(0);
     Send_Data.tx[0]=FRAME_HEADER;
     Send_Data.tx[1] = FRAME_HEADER_SEC;  
     Send_Data.tx[2] = FRAME_HEADER_TRE; 
