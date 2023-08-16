@@ -19,7 +19,7 @@ RadarController::RadarController() {
     nh.param<bool>("/log_flag", log_flag, 1);
     // nh.param<int>("distanceMax_radar2", distanceMax_radar2, 399);
     
-        nh.param<int>("/distanceMax_radar2", distanceMax_radar2, 399);
+    nh.param<int>("/distanceMax_radar2", distanceMax_radar2, 399);
     nh.param<int>("/distanceMax_radar1", distanceMax_radar1, 300);
     nh.param<int>("/distanceMax_radar3", distanceMax_radar3, 399);
     nh.param<int>("/distanceThreshold_radar2_3", distanceThreshold_radar2_3, 38);
@@ -55,7 +55,7 @@ RadarController::~RadarController() {
 void RadarController::setLog_cur_time(){
     auto now = std::chrono::system_clock::now();
     std::time_t cur_timestamp = std::chrono::system_clock::to_time_t(now);
-    logfile << cur_timestamp << " ";
+    logfile <<"开始：" cur_timestamp << " ";
 }
 void RadarController::setGNSSStatus(int status) {
     gnss_status = status;
@@ -125,7 +125,7 @@ void RadarController::turnLeft_huge() {
     vel_msg.linear.x = path_vel;
     radar_cmd_vel.publish(vel_msg);
     if(log_flag){
-        logfile << -vel_msg.angular.z<<" turnLeft_huge" << std::endl;
+        logfile << -vel_msg.angular.z<<" :turnLeft_huge" << std::endl;
     }
 }
 void RadarController::turnRight_huge() {
@@ -182,13 +182,13 @@ void RadarController::line_controlByRadar(){
         if (radar3 < targetDistance - distanceThreshold ){
             turnLeft();
             if(log_flag){
-                logfile  << "radar3 " << radar3<< std::endl;
+                logfile  << "radar3 :" << radar3<< std::endl;
             }
         } else if (radar3 > targetDistance + distanceThreshold )
         {
             turnRight();
             if(log_flag){
-                logfile  << "radar3 " << radar3<< std::endl;
+                logfile  << "radar3 :" << radar3<< std::endl;
             }
         } else {
             go_line();
@@ -279,7 +279,7 @@ void RadarController::controlByRadar() {
 void RadarController::setPath_degree(double degree_){
     path_degree = degree_;
     if(log_flag){
-        logfile   << degree_* 0.5 / 38.6;
+        logfile   <<" degree_:" degree_* 0.5 / 38.6;
     }
 }
 void RadarController::setPath_vel(double vel_){
