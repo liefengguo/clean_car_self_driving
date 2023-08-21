@@ -167,7 +167,7 @@ void Receive(uint8_t bytedata)
 }
 
 // 接收指令线程函数
-void receiveThreadFunc(serial::Serial &ser, std::mutex &mutex, std::condition_variable &cv, bool &isRunning, ros::Publisher &pub) {
+void receiveThreadFunc(serial::Serial &ser, std::mutex &mutex, std::condition_variable &cv, bool &isRunning, ros::Publisher &pub_carSpeed) {
     while (isRunning) {
         uint8_t buffer[1];
         // 读取返回数据
