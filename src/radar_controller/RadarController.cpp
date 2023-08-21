@@ -55,7 +55,7 @@ RadarController::~RadarController() {
 void RadarController::setLog_cur_time(){
     auto now = std::chrono::system_clock::now();
     std::time_t cur_timestamp = std::chrono::system_clock::to_time_t(now);
-    logfile <<"开始：" cur_timestamp << " ";
+    logfile <<"开始："<< cur_timestamp << " ";
 }
 void RadarController::setGNSSStatus(int status) {
     gnss_status = status;
@@ -279,7 +279,7 @@ void RadarController::controlByRadar() {
 void RadarController::setPath_degree(double degree_){
     path_degree = degree_;
     if(log_flag){
-        logfile   <<" degree_:" degree_* 0.5 / 38.6;
+        logfile   <<" degree_:" <<degree_* 0.5 / 38.6;
     }
 }
 void RadarController::setPath_vel(double vel_){

@@ -175,6 +175,7 @@ void receiveThreadFunc(serial::Serial &ser, std::mutex &mutex, std::condition_va
         Frame *frame = (Frame *)buffer;
         int32_t data = (frame->data[0] << 24) | (frame->data[1] << 16) | (frame->data[2] << 8) | frame->data[3];
         std::vector<int32_t> speedData;
+        turn_on_wheeltec_robot::Speed speed;
         speedData.push_back(data * 2 * 125 * M_PI);// 换算成mm/s
         speed.speeds = speedData;
         pub_carSpeed.publish(speed);
@@ -193,7 +194,7 @@ int main(int argc, char **argv) {
 
     // 创建ROS话题
     // ros::Publisher pub = nh.advertise<a22_data>("a22_radar", 1000);
-    ros::Publisher pub_carSpeed = n.advertise<turn_on_wheeltec_robot::Speed>("/fixposition/speed",50);
+    ros::Publisher pub_carSpeed = nh.advertise<turn_on_wheeltec_robot::Speed>("/fixposition/speed",50);
     uint16_t result =  usMBCRC16(CMD_01,CMD_LENGTH - 2,pucCRCHi ,pucCRCLo);
     CMD_01[CMD_LENGTH - 1] = pucCRCHi;
     CMD_01[CMD_LENGTH - 2] = pucCRCLo;
