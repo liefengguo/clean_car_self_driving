@@ -122,3 +122,10 @@ target_link_libraries(serial_write
   ${catkin_LIBRARIES}
 )
 add_dependencies(serial_write ${PROJECT_NAME}_generate_messages_cpp)
+
+
+add_executable(speed_car src/serial_connect/speed_car.cpp src/serial_connect/add_CRC.cpp)
+target_link_libraries(speed_car
+  ${catkin_LIBRARIES}
+)
+add_dependencies(speed_car ${PROJECT_NAME}_generate_messages_cpp)
