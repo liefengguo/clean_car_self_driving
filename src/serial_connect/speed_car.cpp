@@ -175,8 +175,7 @@ void receiveThreadFunc(serial::Serial &ser, std::mutex &mutex, std::condition_va
         Frame *frame = (Frame *)buffer;
         int32_t data = (frame->data[0] << 24) | (frame->data[1] << 16) | (frame->data[2] << 8) | frame->data[3];
         std::vector<int32_t> speedData;
-        speedData.push_back(data* 125* M_PI);// 换算成mm/s
-
+        speedData.push_back(data * 2 * 125 * M_PI);// 换算成mm/s
         speed.speeds = speedData;
         pub_carSpeed.publish(speed);
 
