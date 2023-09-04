@@ -4,10 +4,12 @@
 
 class BoolSubscriber {
 public:
-    BoolSubscriber() {
+    udp_action robot_action;
+
         // 初始化ROS节点和订阅者
-        ros::NodeHandle nh;
-        udp_action robot_action;
+    ros::NodeHandle nh;
+    BoolSubscriber() {
+        
         bool_subscriber = nh.subscribe("pump_app", 10, &BoolSubscriber::boolCallback, this);
     }
 
