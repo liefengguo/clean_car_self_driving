@@ -219,7 +219,9 @@ void udp_action::left_light(uint8_t up){cmd_turn_light(up,0);}
 void udp_action::right_light(uint8_t up){cmd_turn_light(0,up);}
 void udp_action::fan(uint8_t up){cmd_turn_fun(3,up);}
 void udp_action::pump(uint8_t up){cmd_turn_fun(4,up);}
+void udp_action::dust(uint8_t up){cmd_turn_fun(5,up);}
 
+// 越障：input 0:停  1:上   2:下
 void udp_action::precursor(uint8_t up){
     short  transition;  //intermediate variable //中间变量
     char * send_buf = new char[11];

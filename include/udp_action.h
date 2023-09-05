@@ -19,9 +19,11 @@ class udp_action
         void big_light(uint8_t up);
         void left_light(uint8_t up);
         void right_light(uint8_t up);
-        void fan(uint8_t up);
-        void pump(uint8_t up);
-        void precursor(uint8_t up);
+        void fan(uint8_t up);//风机
+        void pump(uint8_t up);//水泵 抽水
+        void precursor(uint8_t up);//越障
+        void dust(uint8_t up);// 抑尘
+
 		
 	private:
         unsigned char Check_Sum(unsigned char Count_Number,unsigned char mode); //BBC check function //BBC校验函数
