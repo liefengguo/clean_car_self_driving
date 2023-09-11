@@ -133,3 +133,8 @@ target_link_libraries(speed_car
   ${catkin_LIBRARIES}
 )
 add_dependencies(speed_car ${PROJECT_NAME}_generate_messages_cpp)
+
+
+add_executable(show_speeds src/tools/show_speeds.cpp)
+target_link_libraries(show_speeds ${catkin_LIBRARIES})
+add_dependencies(show_speeds ${PROJECT_NAME}_generate_messages_cpp)
