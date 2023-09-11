@@ -4,8 +4,8 @@
 
 void speedCallback(const turn_on_wheeltec_robot::Speed::ConstPtr& msg)
 {
-    // 打开一个txt文件以保存speeds数据
-    std::ofstream outFile("speeds.txt");
+    // 打开一个txt文件以追加保存speeds数据
+    std::ofstream outFile("speeds.txt", std::ios::app);
     if (!outFile.is_open())
     {
         ROS_ERROR("无法打开文件以保存speeds数据.");
@@ -17,9 +17,10 @@ void speedCallback(const turn_on_wheeltec_robot::Speed::ConstPtr& msg)
     {
         outFile << msg->speeds[i] << " ";
     }
+    outFile << "\n";  // 添加换行以区分不同的数据记录
 
     outFile.close();
-    ROS_INFO("speeds数据已保存到speeds.txt文件.");
+    ROS_INFO("speeds数据已追加保存到speeds.txt文件.");
 }
 
 int main(int argc, char** argv)
