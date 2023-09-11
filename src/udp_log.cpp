@@ -137,7 +137,7 @@ int main(int argc, char** argv) {
     ChassisParser chassisParser;
     turn_on_wheeltec_robot::Speed speed;
     ros::Publisher pub_carSpeed = n.advertise<turn_on_wheeltec_robot::Speed>("/fixposition/speed",10);
-    ros::Publisher pub_batSOC = n.advertise<sensor_msgs::BatteryState>("/battery_app",10);
+    ros::Publisher battery_pub = n.advertise<sensor_msgs::BatteryState>("/battery_app",10);
     // 创建UDP套接字
     if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
         std::cerr << "Failed to create socket!" << std::endl;
