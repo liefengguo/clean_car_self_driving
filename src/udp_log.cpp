@@ -193,9 +193,9 @@ int main(int argc, char** argv) {
             sensor_msgs::BatteryState battery_msg;
             // Fill in the battery message with your data
             battery_msg.header.stamp = ros::Time::now();
-            battery_msg.voltage = chassisData.batV; // Replace with your actual voltage
-            battery_msg.percentage = chassisData.batSOC; // Replace with your actual percentage
-            battery_msg.current = chassisData.batA;
+            battery_msg.voltage = chassisParser.chassisData.batV; // Replace with your actual voltage
+            battery_msg.percentage = chassisParser.chassisData.batSOC; // Replace with your actual percentage
+            battery_msg.current = chassisParser.chassisData.batA;
 
             // Publish the battery message
             battery_pub.publish(battery_msg);
