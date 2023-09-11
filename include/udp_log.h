@@ -13,6 +13,7 @@
 #include <chrono>
 #include <turn_on_wheeltec_robot/Speed.h>
 #include "ros/ros.h"
+#include <sensor_msgs/BatteryState.h>
 // #define SERVER_IP "127.0.0.1" // 本地IP地址
 #define SERVER_IP "192.168.100.80" // 本地IP地址
 #define SERVER_PORT 8888      // 监听端口号

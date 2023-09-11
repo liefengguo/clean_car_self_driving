@@ -137,7 +137,7 @@ int main(int argc, char** argv) {
     ChassisParser chassisParser;
     turn_on_wheeltec_robot::Speed speed;
     ros::Publisher pub_carSpeed = n.advertise<turn_on_wheeltec_robot::Speed>("/fixposition/speed",10);
-
+    ros::Publisher pub_batSOC = n.advertise<sensor_msgs::BatteryState>("/battery_app",10);
     // 创建UDP套接字
     if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
         std::cerr << "Failed to create socket!" << std::endl;
@@ -190,6 +190,16 @@ int main(int argc, char** argv) {
 
             speed.speeds = speedData;
             pub_carSpeed.publish(speed);
+            sensor_msgs::BatteryState battery_msg;
+            // Fill in the battery message with your data
+            battery_msg.header.stamp = ros::Time::now();
+            battery_msg.voltage = chassisData.batV; // Replace with your actual voltage
+            battery_msg.percentage = chassisData.batSOC; // Replace with your actual percentage
+            battery_msg.current = chassisData.batA;
+
+            // Publish the battery message
+            battery_pub.publish(battery_msg);
+
             std::cout << std::endl;
         }
         
