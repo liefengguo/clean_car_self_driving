@@ -11,6 +11,7 @@
   <param name="distanceMax_radar7_a05" value="300" />
   <param name="distanceMax_radar8_a05" value="300" />
   <param name="log_flag_a05" value="1" />
+  <node pkg="turn_on_wheeltec_robot" type="radar" name="radar" output="screen">
 
   <node pkg="turn_on_wheeltec_robot" type="RadarController_a05" name="RadarController_a05" output="screen">
 

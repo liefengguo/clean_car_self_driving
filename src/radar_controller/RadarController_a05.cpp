@@ -50,15 +50,17 @@ void RadarController_a05::distanceCallback(const a22_data::ConstPtr& msg) {
     radar2 = distance_a05[1];
     radar3 = distance_a05[2];
     radar4 = distance_a05[3];
-    radar5 = distance_a05[4];
-    radar6 = distance_a05[5];
-    radar7 = distance_a05[6];
-    radar8 = distance_a05[7];
+    // radar5 = distance_a05[4];
+    // radar6 = distance_a05[5];
+    // radar7 = distance_a05[6];
+    // radar8 = distance_a05[7];
 
     if (a05_flag) {
+        // if (radar1 <  distanceMax_radar1 || radar2 < distanceMax_radar2 || radar3 < distanceMax_radar3 || 
+        //     radar4 < distanceMax_radar4 || radar5 < distanceMax_radar5 || radar6  < distanceMax_radar6 || 
+        //     radar7 < distanceMax_radar7 || radar8  < distanceMax_radar8 ){
         if (radar1 <  distanceMax_radar1 || radar2 < distanceMax_radar2 || radar3 < distanceMax_radar3 || 
-            radar4 < distanceMax_radar4 || radar5 < distanceMax_radar5 || radar6  < distanceMax_radar6 || 
-            radar7 < distanceMax_radar7 || radar8  < distanceMax_radar8 ){
+            radar4 < distanceMax_radar4 ){
             stop_cmd();
             stop_flag = 1;
         } else {
