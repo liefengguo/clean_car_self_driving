@@ -5,7 +5,7 @@
 void speedCallback(const turn_on_wheeltec_robot::Speed::ConstPtr& msg)
 {
     // 打开一个txt文件以追加保存speeds数据
-    std::ofstream outFile("speeds.txt", std::ios::app);
+    std::ofstream outFile("/home/glf/data/hefei/speeds.txt", std::ios::app);
     if (!outFile.is_open())
     {
         ROS_ERROR("无法打开文件以保存speeds数据.");
