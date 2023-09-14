@@ -9,6 +9,7 @@ int main(int argc, char** argv) {
     geometry_msgs::Twist msg;
     ros::Rate loop_rate(20);
 
+    cmd_vel = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 20);
     RadarController_a05 radarController_a05;
     while (ros::ok)
     {
