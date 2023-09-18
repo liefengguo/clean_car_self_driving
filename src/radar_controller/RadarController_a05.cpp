@@ -103,6 +103,7 @@ void RadarController_a05::controlByRadar() {
             radar7 < distanceMax_radar7 || radar8  < distanceMax_radar8 ){
             stop_cmd();
             stop_flag = 1;
+            std::this_thread::sleep_for(std::chrono::seconds(1));
         } else {
             stop_flag  = 0;
         }
