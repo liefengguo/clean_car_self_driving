@@ -9,6 +9,8 @@
 #include <fstream> 
 #include <sstream>
 #include <boost/shared_ptr.hpp>
+#include <thread>
+
 using namespace turn_on_wheeltec_robot;
 class RadarController_a05 {
 private:
