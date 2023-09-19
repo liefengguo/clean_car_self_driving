@@ -12,6 +12,8 @@ public:
         
         bool_subscriber = nh.subscribe("pump_app", 10, &BoolSubscriber::boolCallback, this);
         dust_subscriber = nh.subscribe("dust_app", 10, &BoolSubscriber::dustCallback, this);
+        cangmen_subscriber = nh.subscribe("cangmen_app", 10, &BoolSubscriber::cangmenCallback, this);
+
     }
 
     void boolCallback(const std_msgs::Bool::ConstPtr& msg) {
@@ -34,10 +36,21 @@ public:
             robot_action.dust(0);
         }
     }
+    void cangmenCallback(const std_msgs::Bool::ConstPtr& msg) {
+        // 在这里处理接收到的消息，可以调用类的其他方法或执行其他操作
+        if (msg->data) {
+            robot_action.cmd_cangmen(1);
+            ROS_INFO("Cangmen UP");
+        } else {
+            ROS_INFO("Cangmen down");
+            robot_action.cmd_cangmen(2);
+        }
+    }
 
 private:
     ros::Subscriber bool_subscriber;
     ros::Subscriber dust_subscriber;
+    ros::Subscriber cangmen_subscriber;
     
 };
 

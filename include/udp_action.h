@@ -23,6 +23,7 @@ class udp_action
         void pump(uint8_t up);//水泵 抽水
         void precursor(uint8_t up);//越障
         void dust(uint8_t up);// 抑尘
+        void cmd_cangmen(uint8_t up); // 0:停，1:上，2:下
 
 		
 	private:

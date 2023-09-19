@@ -204,7 +204,34 @@ void udp_action::cmd_turn_light(uint8_t left , uint8_t right){
         printf("Failed to send UDP data");
     }
 }
-
+void udp_action::cmd_cangmen(uint8_t up){
+    short  transition;  //intermediate variable //中间变量
+    char * send_buf = new char[11];
+    Send_Data.tx[0]=FRAME_HEADER; //frame head 0x7B //帧头0X7B
+    Send_Data.tx[1] = 5; //set aside //预留位
+    Send_Data.tx[2] = 1; 
+    Send_Data.tx[3] = up;
+    Send_Data.tx[4] = 0;     
+    Send_Data.tx[6] = 0;
+    Send_Data.tx[5] = 0;  
+    Send_Data.tx[8] = 0;  
+    Send_Data.tx[7] = 0;    
+    Send_Data.tx[9]=Check_Sum(9,SEND_DATA_CHECK); //Check the bits for the Check_Sum function //校验位，规则参见Check_Sum函数
+    Send_Data.tx[10]=FRAME_TAIL; 
+    // 发送数据包
+    ssize_t sentBytes = sendto(udpSocket, Send_Data.tx, sizeof(Send_Data.tx), 0,
+        reinterpret_cast<struct sockaddr*>(&robotAddr), sizeof(robotAddr));
+    std::cout<<">.<!"<<endl;
+    // sprintf((char)(Send_Data.tx));
+    for (size_t i = 0; i < sizeof(Send_Data.tx); ++i) {
+        std::cout << std::hex << static_cast<int>(Send_Data.tx[i])<<"  ";
+        // std::cout << std::hex << static_cast<int>(Send_Data.tx[i])<<"  " << i << " "<<endl;
+    }
+    if (sentBytes < 0)
+    {
+        printf("Failed to send UDP data");
+    }
+}
 void udp_action::main_up(uint8_t up){
     cmd_main_clean(1,up);
 }
